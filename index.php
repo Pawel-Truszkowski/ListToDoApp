@@ -1,6 +1,6 @@
 <?php
-    
-    #echo "Hello World!";
+
+#echo "Hello World!";
 
 ?>
 
@@ -15,8 +15,20 @@
 </head>
 
 <body>
-    <h1>List To-Do App</h1>
-    
+    <div class="container">
+        <div class="container">
+            <h1>List To-Do App</h1>
+
+            <form method="post" action="tasks.php">
+                Wpisz zadanie na listę: <br>
+                <input type="text" name="task">
+                <input type="submit">
+
+            </form>
+        </div>
+
+        <p></p>
+    </div>
 
 </body>
 
