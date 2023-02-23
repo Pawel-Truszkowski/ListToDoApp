@@ -45,7 +45,7 @@ if (isset($_GET['delete_task'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>List To-Do App</title>
-    <link rel="stylesheet" type="text/css" href="style.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" />
 </head>
 
 <body>
@@ -53,7 +53,7 @@ if (isset($_GET['delete_task'])) {
         <h1>List To-Do App</h1>
         <form method="post" action="index.php">
             <label for="fname">Save your task:</label>
-            <input type="text" name="task" placeholder="This field is required">
+            <input type="text" name="task" placeholder="This field is required" required>
             <?php
             if (isset($error)) ?>
             <p><?= $error; ?> </p>
@@ -88,7 +88,6 @@ if (isset($_GET['delete_task'])) {
             </table>
         </div>
     </div>
-
 </body>
 
 </html>
