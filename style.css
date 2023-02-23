@@ -1,6 +1,18 @@
 
+.container { 
+    height: 100%;
+	margin: 0;
+	text-align: center;
+	width: 100%;
+}
+.array {
+    height: 100%;
+	margin: 0;
+	text-align: center;
+	width: 50%;
+}
 
-.button {
+button {
     border: none;
     color: white;
     padding: 16px 32px;
@@ -11,4 +23,8 @@
     margin: 4px 2px;
     transition-duration: 0.4s;
     cursor: pointer;
+  }
+
+form p {
+    color: red;
   }
