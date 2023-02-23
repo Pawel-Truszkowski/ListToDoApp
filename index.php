@@ -8,10 +8,19 @@ $db = connect();
 
 $task = $_POST['task'];
 
-if (!empty($_POST)) {
-    $insert = $db->prepare('ISERT INTO listtodo (task) VALUES (:task)');
-    $insert->execute(['task'=>$task]);
+if (isset($_POST['submit'])) {
+    try {
+        $insertTask = $db->prepare('INSERT INTO tasks (task) VALUES (:task)');
+        $insertTask->execute(['task' => $task]);
+    } catch (Exception $e) {
+        echo "Error: " . $e->getMessage();
+        echo "Nie udało się dodać zadania do listy.";
+    }
 }
+
+$listQuery = $db->prepare('SELECT * FROM tasks');
+$listQuery->execute();
+$list = $listQuery->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
 
@@ -34,7 +43,7 @@ if (!empty($_POST)) {
                 <form method="post" action="index.php">
                     <label for="fname">Wpisz zadanie na listę:</label>
                     <input type="text" name="task"><br><br>
-                    <input type="submit" value="Zapisz"><br><br>
+                    <button type="submit" name="submit">Zapisz</button>
                 </form>
             </div>
             <h2>Current Tasks</h2>
@@ -48,11 +57,14 @@ if (!empty($_POST)) {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Pierwsze testowe zadanie</td>
-                            <td>Active</td>
-                        </tr>
+                        <?php
+                        foreach ($list as $task) { ?>
+                            <tr>
+                                <td><?= $task['id'] ?></td>
+                                <td><?= $task['task'] ?></td>
+                                <td>Active</td>
+                            </tr>
+                        <?php } ?>
                     </tbody>
                 </table>
             </div>
