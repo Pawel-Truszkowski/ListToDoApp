@@ -8,13 +8,19 @@ $db = connect();
 
 $task = $_POST['task'];
 
+$error = "";
+
 if (isset($_POST['submit'])) {
-    try {
-        $insertTask = $db->prepare('INSERT INTO tasks (task) VALUES (:task)');
-        $insertTask->execute(['task' => $task]);
-    } catch (Exception $e) {
-        echo "Error: " . $e->getMessage();
-        echo "Nie udało się dodać zadania do listy.";
+    if (!empty($_POST['task'])) {
+        try {
+            $insertTask = $db->prepare('INSERT INTO tasks (task) VALUES (:task)');
+            $insertTask->execute(['task' => $task]);
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+            echo "Nie udało się dodać zadania do listy.";
+        }
+    } else {
+        $error = "Musisz podać jakąś wartość aby wpisać zadanie na listę!";
     }
 }
 
@@ -42,7 +48,10 @@ $list = $listQuery->fetchAll(PDO::FETCH_ASSOC);
             <div class="form">
                 <form method="post" action="index.php">
                     <label for="fname">Wpisz zadanie na listę:</label>
-                    <input type="text" name="task"><br><br>
+                    <input type="text" name="task">
+                    <?php
+                    if (isset($error)) ?>
+                    <p><?= $error; ?> </p>
                     <button type="submit" name="submit">Zapisz</button>
                 </form>
             </div>
@@ -53,16 +62,21 @@ $list = $listQuery->fetchAll(PDO::FETCH_ASSOC);
                         <tr>
                             <th>Nr</th>
                             <th>Task</th>
-                            <th>Status</th>
+                            <th>Delete</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
                         foreach ($list as $task) { ?>
                             <tr>
-                                <td><?= $task['id'] ?></td>
-                                <td><?= $task['task'] ?></td>
-                                <td>Active</td>
+                                <td class="nr"><?= $task['id'] ?></td>
+                                <td class="task"><?= $task['task'] ?></td>
+                                <td class="">
+                                    <a href="#">X</a>
+                                    <form>
+
+                                    </form>
+                                </td>
                             </tr>
                         <?php } ?>
                     </tbody>
