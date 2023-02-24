@@ -46,6 +46,7 @@ if (isset($_GET['delete_task'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>List To-Do App</title>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="style.css" />
 </head>
 
 <body>
@@ -59,9 +60,8 @@ if (isset($_GET['delete_task'])) {
             <p><?= $error; ?> </p>
             <button type="submit" name="submit">Submit</button>
         </form>
-
-        <h2>Current Tasks</h2>
-        <div class="array">
+            <h2>Current Tasks</h2>
+        <div>
             <table>
                 <thead>
                     <tr>
