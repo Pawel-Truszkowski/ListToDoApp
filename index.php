@@ -50,8 +50,12 @@ if (isset($_GET['delete_task'])) {
 </head>
 
 <body>
+    <header class="container">
+        <div class="row">
+            <h1 class="col-md-6">List To-Do App</h1>
+        </div>
+    </header>
     <div class="container">
-        <h1>List To-Do App</h1>
         <form method="post" action="index.php">
             <label for="fname">Save your task:</label>
             <input type="text" name="task" placeholder="This field is required" required>
@@ -60,7 +64,7 @@ if (isset($_GET['delete_task'])) {
             <p><?= $error; ?> </p>
             <button type="submit" name="submit">Submit</button>
         </form>
-            <h2>Current Tasks</h2>
+        <h2>Current Tasks</h2>
         <div>
             <table>
                 <thead>
