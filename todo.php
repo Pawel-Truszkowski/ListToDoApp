@@ -70,8 +70,7 @@ if (isset($_GET['delete_task'])) {
             <div class="col-sm-12">
                 <form method="post" action="todo.php">
                     <p><label for="fname">Save your task:</label></p>
-                    <textarea name="task" rows="3" cols="50"></textarea>
-                    <br>
+                    <textarea name="task" rows="3" cols="50"></textarea><br>
                     <button type="submit" name="submit" id="submit">Submit</button>
                     <?php
                     if (isset($error)) ?>
