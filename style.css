@@ -25,7 +25,6 @@ h2 {
   margin-bottom: 20px;
 }
 
-
 nav {
   display: flex;
   justify-content: flex-end;
@@ -112,10 +111,12 @@ footer ul {
   list-style: none;
 }
 
+#submit {
+  width: 150px;
+  height: 50px;
+}
 
-
-/* Create a custom checkbox */
-#checkbox1 {
-  position: absolute;
-  background-color: #eee;
+#error {
+  color: red;
+  margin-top: 10px;
 }

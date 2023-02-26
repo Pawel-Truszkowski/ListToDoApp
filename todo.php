@@ -5,7 +5,6 @@ require 'db_config.php';
 $db = connect();
 
 $task = $_POST['task'];
-
 $error = "";
 
 if (isset($_POST['submit'])) {
@@ -13,14 +12,13 @@ if (isset($_POST['submit'])) {
         try {
             $insertQuery = $db->prepare("INSERT INTO tasks (task, status) VALUES (:task, 0)");
             $insertQuery->execute(['task' => $task]);
-            header('Location: index.php');
+            header('Location: todo.php');
         } catch (Exception $e) {
             echo "Error: " . $e->getMessage();
-            echo "Nie udało się dodać zadania do listy.";
         }
     } else {
         $error = "You have to asign the task!";
-        header('Location: index.php');
+        #header('Location: todo.php');
     }
 }
 
@@ -35,7 +33,7 @@ if (isset($_GET['check'])) {
     $id = $_GET['check'];
     $updateQuery = $db->prepare("UPDATE tasks SET status=1 WHERE id = :id");
     $updateQuery->execute(['id' => $id]);
-    header('Location: index.php');
+    header('Location: todo.php');
 }
 
 #Usuwamy zadanie
@@ -43,7 +41,7 @@ if (isset($_GET['delete_task'])) {
     $id = $_GET['delete_task'];
     $deleteQuery = $db->prepare("DELETE FROM tasks WHERE id = :id");
     $deleteQuery->execute(['id' => $id]);
-    header('Location: index.php');
+    header('Location: todo.php');
 }
 
 ?>
@@ -70,14 +68,14 @@ if (isset($_GET['delete_task'])) {
     <section class="container">
         <div class="row">
             <div class="col-sm-12">
-                <form method="post" action="index.php">
+                <form method="post" action="todo.php">
                     <p><label for="fname">Save your task:</label></p>
                     <textarea name="task" rows="3" cols="50"></textarea>
                     <br>
+                    <button type="submit" name="submit" id="submit">Submit</button>
                     <?php
                     if (isset($error)) ?>
-                    <p><?= $error; ?> </p>
-                    <button type="submit" name="submit">Submit</button>
+                    <p id="error"><?= $error; ?> </p>
                 </form>
             </div>
         </div>
@@ -112,13 +110,13 @@ if (isset($_GET['delete_task'])) {
                                     if ($task['status'] == 1) {
                                         echo "Done";
                                     } else { ?>
-                                        <a href="index.php?check=<?= $task['id']; ?>" class="btn btn-success"><span class="glyphicon glyphicon-check">OK</span></a>
+                                        <a href="todo.php?check=<?= $task['id']; ?>" class="btn btn-success"><span class="glyphicon glyphicon-check">OK</span></a>
                                     <?php
                                     }
                                     ?>
                                 </td>
                                 <td class="delete">
-                                    <a href="index.php?delete_task=<?= $task['id']; ?>" class="btn btn-danger">X</a>
+                                    <a href="todo.php?delete_task=<?= $task['id']; ?>" class="btn btn-danger">X</a>
                                 </td>
                             </tr>
                         <?php $count++;
