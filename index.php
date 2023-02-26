@@ -11,7 +11,7 @@ $error = "";
 if (isset($_POST['submit'])) {
     if (!empty($_POST['task'])) {
         try {
-            $insertQuery = $db->prepare("INSERT INTO tasks (task) VALUES (:task)");
+            $insertQuery = $db->prepare("INSERT INTO tasks (task, status) VALUES (:task, 0)");
             $insertQuery->execute(['task' => $task]);
             header('Location: index.php');
         } catch (Exception $e) {
@@ -19,20 +19,22 @@ if (isset($_POST['submit'])) {
             echo "Nie udało się dodać zadania do listy.";
         }
     } else {
-        $error = "Musisz podać jakąś wartość aby wpisać zadanie na listę!";
+        $error = "You have to asign the task!";
+        header('Location: index.php');
     }
 }
 
-$listQuery = $db->prepare("SELECT * FROM tasks");
+$listQuery = $db->prepare("SELECT * FROM tasks ORDER BY id DESC");
 $listQuery->execute();
 $list = $listQuery->fetchAll(PDO::FETCH_ASSOC);
 
 #Update tasków
 
-if (isset($_GET['update'])) {
-    $id = $_GET['update'];
-    $updateQuery = $db->prepare("UPDATE tasks SET task = :task WHERE id = :id");
-    $updateQuery->execute(['task' => $task, 'id' => $id]);
+if (isset($_GET['check'])) {
+    $status = 1;
+    $id = $_GET['check'];
+    $updateQuery = $db->prepare("UPDATE tasks SET status=1 WHERE id = :id");
+    $updateQuery->execute(['id' => $id]);
     header('Location: index.php');
 }
 
@@ -70,7 +72,7 @@ if (isset($_GET['delete_task'])) {
             <div class="col-sm-12">
                 <form method="post" action="index.php">
                     <p><label for="fname">Save your task:</label></p>
-                    <textarea id="w3review" name="task" rows="3" cols="50" required></textarea>
+                    <textarea name="task" rows="3" cols="50"></textarea>
                     <br>
                     <?php
                     if (isset($error)) ?>
@@ -93,7 +95,7 @@ if (isset($_GET['delete_task'])) {
                         <tr class="table">
                             <th>Nr</th>
                             <th>Task</th>
-                            <th>Update</th>
+                            <th>Status</th>
                             <th>Delete</th>
                         </tr>
                     </thead>
@@ -105,15 +107,18 @@ if (isset($_GET['delete_task'])) {
                             <tr class="table">
                                 <td class="nr"><?= $count ?></td>
                                 <td class="task"><?= $task['task'] ?></td>
-                                <td class="update">
-                                    <a href="index.php?update=<?= $task['id']; ?>">
-                                        <span class="material-symbols-outlined">
-                                            update
-                                        </span>
-                                    </a>
+                                <td class="status">
+                                    <?php
+                                    if ($task['status'] == 1) {
+                                        echo "Done";
+                                    } else { ?>
+                                        <a href="index.php?check=<?= $task['id']; ?>" class="btn btn-success"><span class="glyphicon glyphicon-check">OK</span></a>
+                                    <?php
+                                    }
+                                    ?>
                                 </td>
                                 <td class="delete">
-                                    <a href="index.php?delete_task=<?= $task['id']; ?>">X</a>
+                                    <a href="index.php?delete_task=<?= $task['id']; ?>" class="btn btn-danger">X</a>
                                 </td>
                             </tr>
                         <?php $count++;

@@ -1,20 +1,9 @@
-body {
-    text-align: center;
-    justify-content: center;
-}
-
-h2 {
-    margin-top: 30px;
-    margin-bottom: 20px;
-}
-
-
-
-/* -------------------------------------------------*/
 
 body {
   font-family: Roboto, sans-serif;
   background-image: url('https://content.codecademy.com/courses/learn-css-selectors-visual-rules/hypnotize_bg.png');
+  text-align: center;
+  justify-content: center;
 }
 
 header {
@@ -31,6 +20,11 @@ h1 {
   font-weight: 700;
   margin: 0;
 }
+h2 {
+  margin-top: 30px;
+  margin-bottom: 20px;
+}
+
 
 nav {
   display: flex;
@@ -118,3 +112,10 @@ footer ul {
   list-style: none;
 }
 
+
+
+/* Create a custom checkbox */
+#checkbox1 {
+  position: absolute;
+  background-color: #eee;
+}
