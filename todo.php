@@ -62,7 +62,7 @@ if (isset($_GET['delete_task'])) {
 <body>
     <header class="container">
         <div class="row">
-            <h1 class="col-md-12 text-left">List To-Do App</h1>
+            <h1>List To-Do App</h1>
         </div>
     </header>
     <section class="container">
