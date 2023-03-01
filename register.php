@@ -1,6 +1,19 @@
 <?php
 session_start();
 
+$db = connect();
+
+$login = $_POST['login'];
+$login = htmlentities($login, ENT_QUOTES, "UTF-8"); //Sprawdzanie poprawnosci danych wprowadzonych przez uzytkownika
+$password = $_POST['password'];
+
+$userQuery = $db->prepare("SELECT * FROM users WHERE user=:user");
+//$userQuery->bindValue(':user', $login, PDO::PARAM_STR);
+$userQuery->execute([':user' => $login]);
+$user = $userQuery->fetchAll(PDO::FETCH_ASSOC);
+$numberUsers = count($user);
+
+echo $numberUsers;
 ?>
 
 <!DOCTYPE html>

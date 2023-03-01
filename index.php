@@ -1,6 +1,10 @@
 <?php
 session_start();
 
+if ((isset($_SESSION['logged_in'])) && ($_SESSION['logged_in'] == true)) {
+    header('Location: todo.php');
+    exit();
+}
 ?>
 
 <!DOCTYPE html>
@@ -35,13 +39,16 @@ session_start();
     <div class="row justify_content-center">
         <div class="col-sm-4"></div>
         <div class="col-sm-4">
-            <form action="login.php" method="post">
+            <form method="post" action="login.php">
                 <span>Login: </span><br>
                 <input type="text" name="login" /><br>
                 <span>Password: </span><br>
                 <input type="password" name="password" /><br>
-                <br> <input type="submit" value="Log-in" />
+                <br><input type="submit" value="Log-in" />
             </form>
+            <?php if (isset($_SESSION['error'])) {
+                echo $_SESSION['error'];
+            } ?>
         </div>
     </div>
 </section>

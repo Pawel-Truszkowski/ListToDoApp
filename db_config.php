@@ -2,7 +2,6 @@
 
 function connect()
 {
-
     $host = "localhost";
     $db_user = "root";
     $db_password = "";
@@ -12,7 +11,8 @@ function connect()
     try {
         $db = new PDO($dsn, $db_user, $db_password);
         return $db;
-    } catch (Exception $e) {
+    } catch (PDOException $e) {
         echo $e->getMessage();
+        exit('Database error');
     }
 }
