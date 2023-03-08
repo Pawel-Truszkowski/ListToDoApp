@@ -22,16 +22,15 @@ $login = htmlentities($login, ENT_QUOTES, "UTF-8"); //Sprawdzanie poprawnosci da
 $password = $_POST['password'];
 
 try {
-    $userQuery = $db->prepare("SELECT * FROMM users WHERE user=:user");
-    //$userQuery->bindValue(':user', $login, PDO::PARAM_STR);
-    $userQuery->execute([':user' => $login]);
-    $user = $userQuery->fetchAll(PDO::FETCH_ASSOC);
-    $numberUsers = count($user);
+    $userQuery = $db->prepare("SELECT * FROM users WHERE user=:user");
+    $userQuery->bindValue(':user', $login, PDO::PARAM_STR);
+    $userQuery->execute();
+    $user = $userQuery->fetch();
 } catch (Exception $e) {
     echo $e->getMessage();
 }
 
-if ($numberUsers > 0) {
+if ($userQuery->rowCount() > 0) {
     #Jesli jest wiecej uzytkownikow niz 0 a w zasadzie nie powinno byc wiecej niz 1 to go logujemy
     #czyli przypisujemy zamienne do sesji
     if ($password === $user['password']) {
