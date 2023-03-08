@@ -1,5 +1,12 @@
 <?php
 
+
+if (!isset($_SESSION['zalogowany']))   #jesli zmienna nie jest ustawiona to przekieruj do index.php
+{
+    header('Location: index.php');
+    exit();
+}
+
 require_once 'db_config.php';
 
 $db = connect();
@@ -21,7 +28,7 @@ if (isset($_POST['submit'])) {
     }
 }
 
-$listQuery = $db->prepare("SELECT * FROM tasks ORDER BY id DESC");
+$listQuery = $db->prepare("SELECT * FROM tasks ORDER BY tasks.status ASC");
 $listQuery->execute();
 $list = $listQuery->fetchAll(PDO::FETCH_ASSOC);
 
