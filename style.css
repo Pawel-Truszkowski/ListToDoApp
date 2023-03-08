@@ -18,7 +18,9 @@ footer .row {
 
 h1 {
   font-weight: 700;
-  margin: 0;
+  margin-top: 30px;
+  margin-bottom: 20px;
+  padding: 20px 20px;
 }
 h2 {
   margin-top: 30px;

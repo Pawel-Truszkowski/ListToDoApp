@@ -18,7 +18,6 @@ if (isset($_POST['submit'])) {
         }
     } else {
         $error = "You have to asign the task!";
-        #header('Location: todo.php');
     }
 }
 
@@ -26,8 +25,7 @@ $listQuery = $db->prepare("SELECT * FROM tasks ORDER BY id DESC");
 $listQuery->execute();
 $list = $listQuery->fetchAll(PDO::FETCH_ASSOC);
 
-#Update tasków
-
+#Update tasków - ustawiamy status na 1 jesli zadanie zostało zrobione
 if (isset($_GET['check'])) {
     $status = 1;
     $id = $_GET['check'];
@@ -61,6 +59,9 @@ if (isset($_GET['delete_task'])) {
 
 <body>
     <header class="container">
+        <div class="row">
+            <a href="logout.php">Logout!</a>
+        </div>
         <div class="row">
             <h1>List To-Do App</h1>
         </div>
