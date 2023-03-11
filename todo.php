@@ -1,7 +1,8 @@
 <?php
 
+session_start();
 
-if (!isset($_SESSION['zalogowany']))   #jesli zmienna nie jest ustawiona to przekieruj do index.php
+if (!isset($_SESSION['logged_in']))   #jesli zmienna nie jest ustawiona to przekieruj do index.php
 {
     header('Location: index.php');
     exit();
