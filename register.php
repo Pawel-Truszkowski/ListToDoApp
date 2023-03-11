@@ -22,6 +22,10 @@ $db = connect();
 
 <body>
 
+    <section class="container">
+        <h3>Sorry, registration will be available soon. Please come back later.</h3>
+    </section>
+
 </body>
 
 </html>

@@ -18,8 +18,8 @@ $error = "";
 if (isset($_POST['submit'])) {
     if (!empty($_POST['task'])) {
         try {
-            $insertQuery = $db->prepare("INSERT INTO tasks (task, status) VALUES (:task, 0)");
-            $insertQuery->execute(['task' => $task]);
+            $insertQuery = $db->prepare("INSERT INTO tasks (user_id, task, status) VALUES (:user_id, :task, 0)");
+            $insertQuery->execute(['user_id' => $_SESSION['user_id'], 'task' => $task]);
             header('Location: todo.php');
         } catch (Exception $e) {
             echo "Error: " . $e->getMessage();
@@ -37,17 +37,25 @@ $list = $listQuery->fetchAll(PDO::FETCH_ASSOC);
 if (isset($_GET['check'])) {
     $status = 1;
     $id = $_GET['check'];
-    $updateQuery = $db->prepare("UPDATE tasks SET status=1 WHERE id = :id");
-    $updateQuery->execute(['id' => $id]);
-    header('Location: todo.php');
+    try {
+        $updateQuery = $db->prepare("UPDATE tasks SET status=1 WHERE task_id = :id");
+        $updateQuery->execute(['id' => $id]);
+        header('Location: todo.php');
+    } catch (PDOException $e) {
+        echo $e->getMessage();
+    }
 }
 
 #Usuwamy zadanie
 if (isset($_GET['delete_task'])) {
     $id = $_GET['delete_task'];
-    $deleteQuery = $db->prepare("DELETE FROM tasks WHERE id = :id");
-    $deleteQuery->execute(['id' => $id]);
-    header('Location: todo.php');
+    try {
+        $deleteQuery = $db->prepare("DELETE FROM tasks WHERE task_id = :id");
+        $deleteQuery->execute(['id' => $id]);
+        header('Location: todo.php');
+    } catch (PDOException $e) {
+        echo $e->getMessage();
+    }
 }
 
 ?>
@@ -118,13 +126,13 @@ if (isset($_GET['delete_task'])) {
                                     if ($task['status'] == 1) {
                                         echo "Done";
                                     } else { ?>
-                                        <a href="todo.php?check=<?= $task['id']; ?>" class="btn btn-success"><span class="glyphicon glyphicon-check">OK</span></a>
+                                        <a href="todo.php?check=<?= $task['task_id']; ?>" class="btn btn-success"><span class="glyphicon glyphicon-check">OK</span></a>
                                     <?php
                                     }
                                     ?>
                                 </td>
                                 <td class="delete">
-                                    <a href="todo.php?delete_task=<?= $task['id']; ?>" class="btn btn-danger">X</a>
+                                    <a href="todo.php?delete_task=<?= $task['task_id']; ?>" class="btn btn-danger">X</a>
                                 </td>
                             </tr>
                         <?php $count++;
