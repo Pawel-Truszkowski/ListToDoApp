@@ -29,8 +29,8 @@ if (isset($_POST['submit'])) {
     }
 }
 
-$listQuery = $db->prepare("SELECT * FROM tasks ORDER BY tasks.status ASC");
-$listQuery->execute();
+$listQuery = $db->prepare("SELECT * FROM tasks WHERE user_id = :user_id ORDER BY tasks.status ASC");
+$listQuery->execute(['user_id' => $_SESSION['user_id']]);
 $list = $listQuery->fetchAll(PDO::FETCH_ASSOC);
 
 #Update tasków - ustawiamy status na 1 jesli zadanie zostało zrobione
