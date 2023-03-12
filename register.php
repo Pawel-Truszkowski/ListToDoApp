@@ -21,10 +21,14 @@ $db = connect();
 </head>
 
 <body>
-
-    <section class="container">
-        <h3>Sorry, registration will be available soon. Please come back later.</h3>
-    </section>
+    <header class="container">
+        <div class="row">
+            <a href="index.php">Back</a>
+        </div>
+        <div class="row">
+            <h3>Sorry, registration will be available soon. Please come back later.</h3>
+        </div>
+    </header>
     <!--    
     <section class="container">
         <form method="post">
