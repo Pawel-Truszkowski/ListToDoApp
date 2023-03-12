@@ -13,9 +13,13 @@ require_once 'db_config.php';
 $db = connect();
 
 
-$task = filter_input(INPUT_POST, 'task', FILTER_DEFAULT);
-#$task = $_POST['task'];
+$task = filter_input(INPUT_POST, 'task', FILTER_SANITIZE_SPECIAL_CHARS);
 $error = "";
+
+$listQuery = $db->prepare("SELECT * FROM tasks WHERE user_id = :user_id ORDER BY tasks.status ASC");
+$listQuery->execute(['user_id' => $_SESSION['user_id']]);
+$list = $listQuery->fetchAll(PDO::FETCH_ASSOC);
+
 
 if (isset($_POST['submit'])) {
     if (!empty($_POST['task'])) {
@@ -31,13 +35,9 @@ if (isset($_POST['submit'])) {
     }
 }
 
-$listQuery = $db->prepare("SELECT * FROM tasks WHERE user_id = :user_id ORDER BY tasks.status ASC");
-$listQuery->execute(['user_id' => $_SESSION['user_id']]);
-$list = $listQuery->fetchAll(PDO::FETCH_ASSOC);
-
 #Update tasków - ustawiamy status na 1 jesli zadanie zostało zrobione
 if (isset($_GET['check'])) {
-    $id = $_GET['check'];
+    $id = filter_input(INPUT_GET, 'check', FILTER_SANITIZE_NUMBER_INT);
     try {
         $updateQuery = $db->prepare("UPDATE tasks SET status=1 WHERE task_id = :id");
         $updateQuery->execute(['id' => $id]);
@@ -49,7 +49,7 @@ if (isset($_GET['check'])) {
 
 #Usuwamy zadanie
 if (isset($_GET['delete_task'])) {
-    $id = $_GET['delete_task'];
+    $id = filter_input(INPUT_GET, 'delete_task', FILTER_SANITIZE_NUMBER_INT);
     try {
         $deleteQuery = $db->prepare("DELETE FROM tasks WHERE task_id = :id");
         $deleteQuery->execute(['id' => $id]);

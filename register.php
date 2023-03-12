@@ -25,7 +25,14 @@ $db = connect();
     <section class="container">
         <h3>Sorry, registration will be available soon. Please come back later.</h3>
     </section>
+    <!--    
+    <section class="container">
+        <form method="post">
+            Login: <br /> <input type="text" name="nick" /> </br>
 
+        </form>
+    </section>
+-->
 </body>
 
 </html>

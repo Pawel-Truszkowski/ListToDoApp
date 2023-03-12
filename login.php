@@ -8,12 +8,12 @@ if ((!isset($_POST['login'])) || (!isset($_POST['password']))) {
     exit();
 }
 
-require_once "db_config.php";
+require_once 'db_config.php';
 $db = connect();
 
-$login = $_POST['login'];
+$login = filter_input(INPUT_POST, 'login');
 $login = htmlentities($login, ENT_QUOTES, "UTF-8"); //Sprawdzanie poprawnosci danych wprowadzonych przez uzytkownika
-$password = $_POST['password'];
+$password = filter_input(INPUT_POST, 'password');
 
 try {
     $userQuery = $db->prepare("SELECT * FROM users WHERE user=:user");
