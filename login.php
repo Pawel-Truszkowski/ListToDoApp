@@ -2,17 +2,11 @@
 
 session_start();
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
-
 #Jesli zmienna login i haslo nie sa ustawione to znaczy ze uzytkownik musi sie zalogowac czyli musi wypelnic formularz
 if ((!isset($_POST['login'])) || (!isset($_POST['password']))) {
     header('Location: index.php');
     exit();
 }
-
 
 require_once "db_config.php";
 $db = connect();

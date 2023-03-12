@@ -12,7 +12,9 @@ require_once 'db_config.php';
 
 $db = connect();
 
-$task = $_POST['task'];
+
+$task = filter_input(INPUT_POST, 'task', FILTER_DEFAULT);
+#$task = $_POST['task'];
 $error = "";
 
 if (isset($_POST['submit'])) {
@@ -35,7 +37,6 @@ $list = $listQuery->fetchAll(PDO::FETCH_ASSOC);
 
 #Update tasków - ustawiamy status na 1 jesli zadanie zostało zrobione
 if (isset($_GET['check'])) {
-    $status = 1;
     $id = $_GET['check'];
     try {
         $updateQuery = $db->prepare("UPDATE tasks SET status=1 WHERE task_id = :id");
