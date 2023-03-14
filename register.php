@@ -16,10 +16,15 @@ if ($_SESSION['logged_in']) {
         $nick = filter_input(INPUT_POST, 'nick', FILTER_DEFAULT);
 
 
-
         if ((strlen($nick) < 3) || (strlen($nick) > 20)) {
             $okey = false;
             $_SESSION['e_nick'] = "The nickname must contain between 3 and 20 characters";
+        }
+
+        //Sprawdzenie poprawności nicka czyli z poprawnymi znakami
+        if (ctype_alnum($nick) == false) {
+            $okey = false;
+            $_SESSION['e_nick'] = "Nick moze składać się tylko z liter i cyfr (bez polskich znaków). ";
         }
     }
 }
@@ -52,6 +57,12 @@ if ($_SESSION['logged_in']) {
         <div class="row">
             <form method="post" action="register.php">
                 Login: <br /> <input type="text" name="nick" /> </br>
+                <?php
+                if (isset($_SESSION['e_nick'])) {
+                    echo '<div id="error">' . $_SESSION['e_nick'] . '</div>';
+                    unset($_SESSION['e_nick']);
+                }
+                ?>
                 E-mail: <br /> <input type="text" name="email" /> </br>
                 Password: <br /> <input type="text" name="password1" /> </br>
                 Confirm password: <br /> <input type="text" name="password2" /> </br>
