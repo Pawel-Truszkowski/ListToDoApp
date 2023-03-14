@@ -26,6 +26,15 @@ if ($_SESSION['logged_in']) {
             $okey = false;
             $_SESSION['e_nick'] = "Nick moze składać się tylko z liter i cyfr (bez polskich znaków). ";
         }
+
+        //Sprawddzenie poprawności e-maila
+        $email = $_POST['email'];
+        $emailB = filter_var($email, FILTER_SANITIZE_EMAIL); //Funkcja sprawdzająca poprawność maila
+
+        if ((filter_var($emailB, FILTER_VALIDATE_EMAIL) == false) || ($emailB != $email)) {
+            $wszystko_OK = false;
+            $_SESSION['e_email'] = "Podaj poprawny adres e-mail!";
+        }
     }
 }
 
