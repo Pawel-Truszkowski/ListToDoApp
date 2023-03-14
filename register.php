@@ -4,6 +4,25 @@ session_start();
 require_once 'db_config.php';
 $db = connect();
 
+#Sprawdzamy czy uytkownik czasem nie jest zalogowany juz
+if ($_SESSION['logged_in']) {
+    echo '<p><b><span style="color:red">You are already logged in.</span></b></p>
+		<p><a href="index.php">Back</a></p>';
+} else {
+    if (isset($_POST['email'])) {
+
+        $okey = true; #zakladam ze wsyzstko bedzei zgodne
+
+        $nick = filter_input(INPUT_POST, 'nick', FILTER_DEFAULT);
+
+
+
+        if ((strlen($nick) < 3) || (strlen($nick) > 20)) {
+            $okey = false;
+            $_SESSION['e_nick'] = "The nickname must contain between 3 and 20 characters";
+        }
+    }
+}
 
 ?>
 
@@ -26,17 +45,21 @@ $db = connect();
             <a href="index.php">Back</a>
         </div>
         <div class="row">
-            <h3>Sorry, registration will be available soon. Please come back later.</h3>
+            <h3>Register your free account!</h3>
         </div>
     </header>
-    <!--    
     <section class="container">
-        <form method="post">
-            Login: <br /> <input type="text" name="nick" /> </br>
-
-        </form>
+        <div class="row">
+            <form method="post" action="register.php">
+                Login: <br /> <input type="text" name="nick" /> </br>
+                E-mail: <br /> <input type="text" name="email" /> </br>
+                Password: <br /> <input type="text" name="password1" /> </br>
+                Confirm password: <br /> <input type="text" name="password2" /> </br>
+                <br><input type="submit" value="Sing-up" />
+            </form>
+        </div>
     </section>
--->
+
 </body>
 
 </html>
