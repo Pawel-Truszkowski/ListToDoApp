@@ -18,13 +18,13 @@ if ($_SESSION['logged_in']) {
 
         if ((strlen($nick) < 3) || (strlen($nick) > 20)) {
             $okey = false;
-            $_SESSION['e_nick'] = "The nickname must contain between 3 and 20 characters";
+            $_SESSION['e_nick'] = "The nickname must contain between 3 and 20 characters.";
         }
 
         //Sprawdzenie poprawności nicka czyli z poprawnymi znakami
         if (ctype_alnum($nick) == false) {
             $okey = false;
-            $_SESSION['e_nick'] = "Nick moze składać się tylko z liter i cyfr (bez polskich znaków). ";
+            $_SESSION['e_nick'] = "Nickname can only consist of letters and numbers.";
         }
 
         //Sprawddzenie poprawności e-maila
@@ -32,9 +32,27 @@ if ($_SESSION['logged_in']) {
         $emailB = filter_var($email, FILTER_SANITIZE_EMAIL); //Funkcja sprawdzająca poprawność maila
 
         if ((filter_var($emailB, FILTER_VALIDATE_EMAIL) == false) || ($emailB != $email)) {
-            $wszystko_OK = false;
-            $_SESSION['e_email'] = "Podaj poprawny adres e-mail!";
+            $okey = false;
+            $_SESSION['e_email'] = "Provide a valid email address";
         }
+
+
+        //Sprawdź poprawność hasła
+        $password1 = $_POST['password1'];
+        $password2 = $_POST['password2'];
+
+        if ((strlen($password1) < 8) || (strlen($password1) > 20)) {
+            $okey = false;
+            $_SESSION['e_password'] = "The password must contain between 8 and 20 characters.";
+        }
+
+        if ($password1 != $password2) {
+            $okey = false;
+            $_SESSION['e_password'] = "The passwords provided are not identical";
+        }
+
+        //Zahashowanie hasła
+        $password_hash = password_hash($password1, PASSWORD_DEFAULT);
     }
 }
 
@@ -64,7 +82,7 @@ if ($_SESSION['logged_in']) {
     </header>
     <section class="container">
         <div class="row">
-            <form method="post" action="register.php">
+            <form method="post">
                 Login: <br /> <input type="text" name="nick" /> </br>
                 <?php
                 if (isset($_SESSION['e_nick'])) {
@@ -73,8 +91,20 @@ if ($_SESSION['logged_in']) {
                 }
                 ?>
                 E-mail: <br /> <input type="text" name="email" /> </br>
-                Password: <br /> <input type="text" name="password1" /> </br>
-                Confirm password: <br /> <input type="text" name="password2" /> </br>
+                <?php
+                if (isset($_SESSION['e_email'])) {
+                    echo '<div id="error">' . $_SESSION['e_email'] . '</div>';
+                    unset($_SESSION['e_email']);
+                }
+                ?>
+                Password: <br /> <input type="password" name="password1" /> </br>
+                Confirm password: <br /> <input type="password" name="password2" /> </br>
+                <?php
+                if (isset($_SESSION['e_password'])) {
+                    echo '<div id="error">' . $_SESSION['e_password'] . '</div>';
+                    unset($_SESSION['e_password']);
+                }
+                ?>
                 <br><input type="submit" value="Sing-up" />
             </form>
         </div>
