@@ -54,6 +54,27 @@ if ($_SESSION['logged_in']) {
         //Zahashowanie hasła
         $password_hash = password_hash($password1, PASSWORD_DEFAULT);
     }
+
+    //łaczenie z bazą 
+    require_once "db_config.php";
+
+    try {
+        $db = connect();
+
+        if (!$db) {
+            throw new Exception('Database Error');
+        } else {
+            $userQuery = $db->prepare("SELECT user_id FROM users WHERE user=:nick");
+            $userQuery->bindValue(':user', $nick, PDO::PARAM_STR);
+            $userQuery->execute();
+            $user = $userQuery->fetch();
+
+            
+        }
+    } catch (Exception $e) {
+        echo '<span style = "color: red;"> Błąd serwera! Przepraszamy za niedogodności i zapraszamy ponownie w innym terminie.</span>';
+        echo '</br> Informacja developerska: ' . $e;
+    }
 }
 
 ?>
