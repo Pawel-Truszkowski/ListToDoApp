@@ -64,16 +64,42 @@ if ($_SESSION['logged_in']) {
         if (!$db) {
             throw new Exception('Database Error');
         } else {
-            $userQuery = $db->prepare("SELECT user_id FROM users WHERE user=:nick");
-            $userQuery->bindValue(':user', $nick, PDO::PARAM_STR);
-            $userQuery->execute();
+            # Sprawdzanie czy istnieje nick
+            $userQuery = $db->query("SELECT user_id FROM users WHERE user='$nick'");
             $user = $userQuery->fetch();
 
-            
+            if (!$userQuery) throw new Exception($db->errorCode());
+
+            $exist_nick = $userQuery->rowCount();
+            if ($exist_nick > 0) {
+                $okey = false;
+                $_SESSION['e_nick'] = "Such a nickname already exists. Please choose another one.";
+            }
+
+            # Sprawdzanie czy istnieje e-mail
+            $emailQuery = $db->query("SELECT email FROM users WHERE email='$email'");
+            $user_email = $emailQuery->fetch();
+
+            if (!$emailQuery) throw new Exception($db->errorCode());
+
+            $exist_email = $emailQuery->rowCount();
+            if ($exist_email > 0) {
+                $okey = false;
+                $_SESSION['e_email'] = "Such a e-mail already exists. Please choose another one.";
+            }
+
+            if ($okey == true) {
+                if ($db->query("INSERT INTO users VALUES (NULL, '$nick', '$password_hash', '$email')")) {
+                    $_SESSION['succes_reg'] = true;
+                    header('Location: welcome.php');
+                } else {
+                    throw new Exception($db->errorCode());
+                }
+            }
         }
     } catch (Exception $e) {
         echo '<span style = "color: red;"> Błąd serwera! Przepraszamy za niedogodności i zapraszamy ponownie w innym terminie.</span>';
-        echo '</br> Informacja developerska: ' . $e;
+        echo '</br> Informacja developerska: ' . $e->getMessage();
     }
 }
 
