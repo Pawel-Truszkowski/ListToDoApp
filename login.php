@@ -27,7 +27,7 @@ try {
 if ($userQuery->rowCount() > 0) {
     #Jesli jest wiecej uzytkownikow niz 0 a w zasadzie nie powinno byc wiecej niz 1 to go logujemy
     #czyli przypisujemy zamienne do sesji
-    if ($password === $user['password']) {
+    if (password_verify($password, $user['password'])) {
         $_SESSION['logged_in'] = true;
         $_SESSION['user_id'] = $user['user_id'];
         $_SESSION['user'] = $user['user'];
