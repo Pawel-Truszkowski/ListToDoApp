@@ -55,6 +55,17 @@ if ($_SESSION['logged_in']) {
         $password_hash = password_hash($password1, PASSWORD_DEFAULT);
     }
 
+    $secret = "6LciWBAlAAAAANsusAEYmTDa47aSvJE_CsJ8EmcV";
+    $response = $_POST['g-recaptcha-response'];
+
+    $check = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . $secret . '&response=' . $response);
+
+    $result = json_decode($check);
+
+    if ($result["success"] === false) {
+        $okey = false;
+        $_SESSION['e_bot'] = "Confirm that you are not a bot!";
+    }
     //łaczenie z bazą 
     require_once "db_config.php";
 
@@ -116,6 +127,9 @@ if ($_SESSION['logged_in']) {
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="style.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+    <script src="https://www.google.com/recaptcha/api.js"></script>
+
+
 </head>
 
 <body>
@@ -152,6 +166,17 @@ if ($_SESSION['logged_in']) {
                     unset($_SESSION['e_password']);
                 }
                 ?>
+                <div class="text-center">
+                    <div class="g-recaptcha" data-sitekey="6LciWBAlAAAAAICsOfjVSROkWu39PVlzXflH_OaV"></div>
+                </div>
+
+                <?php
+                if (isset($_SESSION['e_bot'])) {
+                    echo '<div id="error">' . $_SESSION['e_bot'] . '</div>';
+                    unset($_SESSION['e_bot']);
+                }
+                ?>
+
                 <br><input type="submit" value="Sing-up" />
             </form>
         </div>

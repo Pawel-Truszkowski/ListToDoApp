@@ -37,26 +37,6 @@ a {
   margin: 0;
 }
 
-.jumbotron {
-  display: flex;
-  align-items: center;
-  background-image: url('https://content.codecademy.com/projects/personal_portfolio/background.jpeg');
-  background-size: cover;
-  color: #ffffff;
-  height: 400px;
-}
-
-.jumbotron h2 {
-  font-size: 60px;
-  font-weight: 700;
-  margin: 0;
-  color: #fff;
-}
-
-.jumbotron h3 {
-  margin: 0 0 20px;
-  color: #fff;
-}
 
 section .row img {
   margin: 0 0 30px;
@@ -88,6 +68,14 @@ section .row img {
 .portrait {
   width:  350px;
   height: 300px;
+}
+
+form .text-center {
+  text-align: center;
+}
+
+form .g-recaptcha {
+  display: inline-block;
 }
 
 figure img {
