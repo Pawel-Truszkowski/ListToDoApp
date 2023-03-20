@@ -12,6 +12,7 @@ function connect()
         $db = new PDO($dsn, $db_user, $db_password);
         return $db;
     } catch (PDOException $e) {
-        exit('Database error');
+        echo $e->getMessage() . "<br><br>";
+        exit('Database error. Please try again later.');
     }
 }
