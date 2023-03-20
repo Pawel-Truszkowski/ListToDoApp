@@ -46,6 +46,7 @@ if ((isset($_SESSION['logged_in'])) && ($_SESSION['logged_in'] == true)) {
                 </form>
                 <?php if (isset($_SESSION['error'])) {
                     echo $_SESSION['error'];
+                    unset($_SESSION['error']);
                 } ?>
             </div>
         </div>

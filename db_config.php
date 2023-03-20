@@ -5,7 +5,7 @@ function connect()
     $host = "localhost";
     $db_user = "root";
     $db_password = "";
-    $db_name = "listtodo";
+    $db_name = "ToDoApp";
     $dsn = "mysql:host=$host;dbname=$db_name";
 
     try {

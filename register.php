@@ -110,8 +110,8 @@ if ($_SESSION['logged_in']) {
             }
         }
     } catch (Exception $e) {
-        echo '<span style = "color: red;"> Błąd serwera! Przepraszamy za niedogodności i zapraszamy ponownie w innym terminie.</span>';
-        echo '</br> Informacja developerska: ' . $e->getMessage();
+        echo '<span style = "color: red;"> Database error. Please come back later.</span>';
+        echo '</br> Developer information: ' . $e->getMessage();
     }
 }
 
