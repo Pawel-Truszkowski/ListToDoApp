@@ -15,7 +15,6 @@ if ($_SESSION['logged_in']) {
 
         $nick = filter_input(INPUT_POST, 'nick', FILTER_DEFAULT);
 
-
         if ((strlen($nick) < 3) || (strlen($nick) > 20)) {
             $okey = false;
             $_SESSION['e_nick'] = "The nickname must contain between 3 and 20 characters.";
@@ -53,19 +52,21 @@ if ($_SESSION['logged_in']) {
 
         //Zahashowanie hasła
         $password_hash = password_hash($password1, PASSWORD_DEFAULT);
+
+
+        $secret = "6LciWBAlAAAAANsusAEYmTDa47aSvJE_CsJ8EmcV";
+        $response = $_POST['g-recaptcha-response'];
+
+        $check = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . $secret . '&response=' . $response);
+
+        $result = json_decode($check);
+
+        if (($result->success) == false) {
+            $okey = false;
+            $_SESSION['e_bot'] = "Confirm that you are not a bot!";
+        }
     }
 
-    $secret = "6LciWBAlAAAAANsusAEYmTDa47aSvJE_CsJ8EmcV";
-    $response = $_POST['g-recaptcha-response'];
-
-    $check = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . $secret . '&response=' . $response);
-
-    $result = json_decode($check);
-
-    if ($result["success"] === false) {
-        $okey = false;
-        $_SESSION['e_bot'] = "Confirm that you are not a bot!";
-    }
     //łaczenie z bazą 
     require_once "db_config.php";
 
