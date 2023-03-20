@@ -36,12 +36,10 @@ if ($userQuery->rowCount() > 0) {
         unset($_SESSION['error']);
         header('Location: todo.php');
     } else {
-        $_SESSION['error'] = '<span style="color:red">Nieprawidłowy login lub hasło!</span>';
-        unset($_SESSION['error']);
+        $_SESSION['error'] = '<span style="color:red">Incorrect login or password!</span>';
         header('Location: index.php');
     }
 } else {
-    $_SESSION['error'] = '<span style="color:red">Nieprawidłowy login lub hasło!</span>';
-    unset($_SESSION['error']);
+    $_SESSION['error'] = '<span style="color:red">Incorrect login or password!</span>';
     header('Location: index.php');
 }
