@@ -1,8 +1,7 @@
 <?php
 session_start();
 
-require_once 'db_config.php';
-$db = connect();
+error_reporting(E_ALL & ~E_NOTICE); //Hide notices
 
 #Sprawdzamy czy uytkownik czasem nie jest zalogowany juz
 if ($_SESSION['logged_in']) {
