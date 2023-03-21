@@ -53,7 +53,7 @@ if ($_SESSION['logged_in']) {
         $password_hash = password_hash($password1, PASSWORD_DEFAULT);
 
 
-        $secret = "6LciWBAlAAAAANsusAEYmTDa47aSvJE_CsJ8EmcV";
+        $secret = "{SECRET KEY}";
         $response = $_POST['g-recaptcha-response'];
 
         $check = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . $secret . '&response=' . $response);
@@ -167,7 +167,7 @@ if ($_SESSION['logged_in']) {
                 }
                 ?>
                 <div class="text-center">
-                    <div class="g-recaptcha" data-sitekey="6LciWBAlAAAAAICsOfjVSROkWu39PVlzXflH_OaV"></div>
+                    <div class="g-recaptcha" data-sitekey="{SITE KEY}"></div>
                 </div>
 
                 <?php
