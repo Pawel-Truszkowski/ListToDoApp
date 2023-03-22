@@ -1,3 +1,26 @@
+<?php
+session_start();
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
+require_once 'db_config';
+
+if($_GET){
+    if(isset($_GET['email'])){
+        $email = $_GET['email'];
+        if($email == '') unset($email);
+    }
+
+    if(isset($_GET['token'])){
+        $token = $_GET['token'];
+        if($token == '') unset($token);
+    }
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -14,7 +37,8 @@
 <body>
     <section class="container">
         <div class="row">
-            <h2>Thank you for registering on the site! Check your e-mail and confirm by click on the link!</h2> <br><br>
+            <h2>Thank you for registering on the site! You can already log in to your account</h2> <br><br>
+            <a href="index.php">Log-in to your account!</a>
         </div>
     </section>
 </body>
