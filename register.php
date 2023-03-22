@@ -53,7 +53,7 @@ if ($_SESSION['logged_in']) {
         $password_hash = password_hash($password1, PASSWORD_DEFAULT);
 
 
-        $secret = "{SECRET KEY}";
+        $secret = "6LciWBAlAAAAANsusAEYmTDa47aSvJE_CsJ8EmcV";
         $response = $_POST['g-recaptcha-response'];
 
         $check = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . $secret . '&response=' . $response);
@@ -64,6 +64,13 @@ if ($_SESSION['logged_in']) {
             $okey = false;
             $_SESSION['e_bot'] = "Confirm that you are not a bot!";
         }
+
+        function getToken($len = 32)
+        {
+            return substr(md5(openssl_random_pseudo_bytes(20)), -$len);
+        }
+
+        $token = getToken(10);
     }
 
     //łaczenie z bazą 
@@ -100,7 +107,7 @@ if ($_SESSION['logged_in']) {
             }
 
             if ($okey == true) {
-                if ($db->query("INSERT INTO users VALUES (NULL, '$nick', '$password_hash', '$email')")) {
+                if ($db->query("INSERT INTO users VALUES (NULL, '$nick', '$password_hash', '$email', '$token', 0)")) {
                     $_SESSION['succes_reg'] = true;
                     header('Location: welcome.php');
                 } else {
@@ -167,7 +174,7 @@ if ($_SESSION['logged_in']) {
                 }
                 ?>
                 <div class="text-center">
-                    <div class="g-recaptcha" data-sitekey="{SITE KEY}"></div>
+                    <div class="g-recaptcha" data-sitekey="6LciWBAlAAAAAICsOfjVSROkWu39PVlzXflH_OaV"></div>
                 </div>
 
                 <?php
