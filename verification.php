@@ -1,21 +1,36 @@
 <?php
 session_start();
 
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
-use PHPMailer\PHPMailer\Exception;
+require_once "db_config.php";
 
-require_once 'db_config';
-
-if($_GET){
-    if(isset($_GET['email'])){
+if ($_GET) {
+    if (isset($_GET['email'])) {
         $email = $_GET['email'];
-        if($email == '') unset($email);
+        if ($email == '') unset($email);
     }
 
-    if(isset($_GET['token'])){
+    if (isset($_GET['token'])) {
         $token = $_GET['token'];
-        if($token == '') unset($token);
+        if ($token == '') unset($token);
+    }
+
+    if (!empty($email) && !empty($token)) {
+        try {
+            $db = connect();
+            $select = $db->prepare("SELECT user_id FROM users WHERE email=:email AND token=:token");
+            $select->execute(['email' => $email, 'token' => $token]);
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+
+        if ($select->fetch() > 0) {
+            try {
+                $update = $db->prepare("UPDATE users SET confirmation=1, token='' WHERE email=:email");
+                $update->execute(['email' => $email]);
+            } catch (PDOException $e) {
+                echo $e->getMessage();
+            }
+        }
     }
 }
 

@@ -2,8 +2,10 @@
 session_start();
 
 use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\SMTP;
+
+require 'vendor/autoload.php';
 
 error_reporting(E_ALL & ~E_NOTICE); //Hide notices
 
@@ -113,6 +115,38 @@ if ($_SESSION['logged_in']) {
             if ($okey == true) {
                 if ($db->query("INSERT INTO users VALUES (NULL, '$nick', '$password_hash', '$email', '$token', 0)")) {
                     $_SESSION['succes_reg'] = true;
+
+                    // Wysyłka maila
+                    try {
+                        //Create an instance; passing `true` enables exceptions
+                        $mail = new PHPMailer(true);
+
+                        //Server settings
+                        $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
+                        $mail->isSMTP();                                            //Send using SMTP
+                        $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
+                        $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
+                        $mail->Username   = 'send.email.to.client@gmail.com';                     //SMTP username
+                        $mail->Password   = 'xuqbmacztcudbkaj';                               //SMTP password
+                        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
+                        $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+
+                        //Recipients
+                        $mail->setFrom('send.email.to.client@gmail.com', 'User Registration');
+                        $mail->addAddress($email);     //Add a recipient
+                        //$mail->addReplyTo('biuro@domena.pl', 'Information');
+
+
+                        $mail->isHTML(true);                                  //Set email format to HTML
+                        $mail->Subject = 'Confirm e-mail';
+                        $mail->Body    = 'Activate your e-mail: 
+                        <a href="http://localhost/ListTodo/verification.php?email=' . $email . '&token=' . $token . '"> Click on the link </a>';
+
+                        $mail->send();
+                    } catch (Exception $e) {
+                        echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+                    }
+
                     header('Location: welcome.php');
                 } else {
                     throw new PDOException($db->errorCode());
@@ -122,41 +156,6 @@ if ($_SESSION['logged_in']) {
     } catch (PDOException $e) {
         echo '<span style = "color: red;"> Database error. Please come back later.</span>';
         echo '</br> Developer information: ' . $e->getMessage();
-    }
-
-    //Load Composer's autoloader
-    require 'vendor/autoload.php';
-    //require 'vendor/autoload.php';
-
-    try {
-        //Create an instance; passing `true` enables exceptions
-        $mail = new PHPMailer(true);
-
-        //Server settings
-        $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
-        $mail->isSMTP();                                            //Send using SMTP
-        $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
-        $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
-        $mail->Username   = 'send.email.to.client@gmail.com';                     //SMTP username
-        $mail->Password   = 'xuqbmacztcudbkaj';                               //SMTP password
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
-        $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
-
-        //Recipients
-        $mail->setFrom('no-reply@domena.pl', 'User Registration');
-        $mail->addAddress($email);     //Add a recipient
-        $mail->addReplyTo('biuro@domena.pl', 'Information');
-
-        $mail->isHTML(true);                                  //Set email format to HTML
-        $mail->Subject = 'Confirm e-mail';
-        $mail->Body    = 'Activate your e-mail: 
-        <a href="http://localhost/ListTodo/verification.php?email=' . $email . '&token=' . $token . '"> Click on the link </a>';
-
-
-        $mail->send();
-        echo 'Message has been sent';
-    } catch (Exception $e) {
-        echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
     }
 }
 
