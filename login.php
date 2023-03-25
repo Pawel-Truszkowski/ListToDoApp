@@ -28,13 +28,19 @@ if ($userQuery->rowCount() > 0) {
     #Jesli jest wiecej uzytkownikow niz 0 a w zasadzie nie powinno byc wiecej niz 1 to go logujemy
     #czyli przypisujemy zamienne do sesji
     if (password_verify($password, $user['password'])) {
-        $_SESSION['logged_in'] = true;
-        $_SESSION['user_id'] = $user['user_id'];
-        $_SESSION['user'] = $user['user'];
-        $_SESSION['email'] = $user['email'];
 
-        unset($_SESSION['error']);
-        header('Location: todo.php');
+        if ($user['confirmation'] == 1) {
+            $_SESSION['logged_in'] = true;
+            $_SESSION['user_id'] = $user['user_id'];
+            $_SESSION['user'] = $user['user'];
+            $_SESSION['email'] = $user['email'];
+
+            unset($_SESSION['error']);
+            header('Location: todo.php');
+        } else {
+            $_SESSION['error'] = '<span style="color:red">Please activate your e-mail!</span>';
+            header('Location: index.php');
+        }
     } else {
         $_SESSION['error'] = '<span style="color:red">Incorrect login or password!</span>';
         header('Location: index.php');

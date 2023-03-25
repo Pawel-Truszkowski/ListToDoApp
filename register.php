@@ -134,7 +134,6 @@ if ($_SESSION['logged_in']) {
                         //Recipients
                         $mail->setFrom('send.email.to.client@gmail.com', 'User Registration');
                         $mail->addAddress($email);     //Add a recipient
-                        //$mail->addReplyTo('biuro@domena.pl', 'Information');
 
 
                         $mail->isHTML(true);                                  //Set email format to HTML
