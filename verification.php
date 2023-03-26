@@ -56,7 +56,7 @@ if ($_GET) {
 <body>
     <section class="container">
         <div class="row">
-            <h2>Thank you for registering on the site! You can already log in to your account</h2> <br><br>
+            <h2>Thank you for registering on the site! You can already log-in to your account!</h2> <br><br>
             <a href="index.php">Log-in to your account!</a>
         </div>
     </section>
