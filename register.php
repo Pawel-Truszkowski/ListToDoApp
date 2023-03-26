@@ -147,7 +147,6 @@ if ($_SESSION['logged_in']) {
                     }
 
                     header('Location: welcome.php');
-                    
                 } else {
                     throw new PDOException($db->errorCode());
                 }
