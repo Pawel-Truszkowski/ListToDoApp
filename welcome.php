@@ -1,6 +1,10 @@
 <?php
-    session_start();
-    
+session_start();
+if (!isset($_SESSION['success_reg'])) {
+    echo $_SESSION['success_reg'];
+    header('Location: index.php');
+    exit();
+}
 ?>
 
 <!DOCTYPE html>

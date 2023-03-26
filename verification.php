@@ -1,7 +1,10 @@
 <?php
 session_start();
 
-require_once "db_config.php";
+if (empty($_GET)) {
+    header('Location: index.php');
+    exit();
+}
 
 if ($_GET) {
     if (isset($_GET['email'])) {
@@ -16,6 +19,7 @@ if ($_GET) {
 
     if (!empty($email) && !empty($token)) {
         try {
+            require_once "db_config.php";
             $db = connect();
             $select = $db->prepare("SELECT user_id FROM users WHERE email=:email AND token=:token");
             $select->execute(['email' => $email, 'token' => $token]);

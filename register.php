@@ -11,8 +11,8 @@ error_reporting(E_ALL & ~E_NOTICE); //Hide notices
 
 #Sprawdzamy czy uytkownik czasem nie jest zalogowany juz
 if ($_SESSION['logged_in']) {
-    echo '<p><b><span style="color:red">You are already logged in.</span></b></p>
-		<p><a href="index.php">Back</a></p>';
+    header('Location: todo.php');
+    exit();
 } else {
     if (isset($_POST['email'])) {
 
@@ -114,7 +114,7 @@ if ($_SESSION['logged_in']) {
 
             if ($okey == true) {
                 if ($db->query("INSERT INTO users VALUES (NULL, '$nick', '$password_hash', '$email', '$token', 0)")) {
-                    $_SESSION['succes_reg'] = true;
+                    $_SESSION['success_reg'] = true;
 
                     // Wysyłka maila
                     try {
@@ -147,6 +147,7 @@ if ($_SESSION['logged_in']) {
                     }
 
                     header('Location: welcome.php');
+                    
                 } else {
                     throw new PDOException($db->errorCode());
                 }
