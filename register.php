@@ -59,7 +59,7 @@ if ($_SESSION['logged_in']) {
         $password_hash = password_hash($password1, PASSWORD_DEFAULT);
 
 
-        $secret = "6LciWBAlAAAAANsusAEYmTDa47aSvJE_CsJ8EmcV";
+        $secret = "{SECRET KEY}";
         $response = $_POST['g-recaptcha-response'];
 
         $check = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . $secret . '&response=' . $response);
@@ -127,7 +127,7 @@ if ($_SESSION['logged_in']) {
                         $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
                         $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
                         $mail->Username   = 'send.email.to.client@gmail.com';                     //SMTP username
-                        $mail->Password   = 'xuqbmacztcudbkaj';                               //SMTP password
+                        $mail->Password   = 'XXXXXX';                               //SMTP password
                         $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
                         $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
@@ -211,7 +211,7 @@ if ($_SESSION['logged_in']) {
                 }
                 ?>
                 <div class="text-center">
-                    <div class="g-recaptcha" data-sitekey="6LciWBAlAAAAAICsOfjVSROkWu39PVlzXflH_OaV"></div>
+                    <div class="g-recaptcha" data-sitekey="{SITE KEY}"></div>
                 </div>
 
                 <?php
